@@ -38,16 +38,16 @@ class EmployeeManagementSystem
             if (file.is_open()) {
                 employees.clear();
                 int id, age;
-                std::string name, position, line;
                 float salary;
+                std::string name, position, line;
 
                 while (std::getline(file, line)) {
                     std::istringstream iss(line);
                     if (iss >> id >> std::ws && std::getline(iss, name, ',') && iss >> age >> std::ws &&
                         std::getline(iss, position, ',') && iss >> salary) {
-                        employees.emplace_back(id, name, age, position, salary);
+                        employees.emplace_back(id, name, position, salary, age);
                     }
-                    employees.emplace_back(id, name, age, position, salary);
+                    //employees.emplace_back(id, name, position, salary, age);
                 }
                 file.close();
                 std::cout << "Data loaded successfully from " << my_file << std::endl;

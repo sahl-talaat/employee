@@ -46,7 +46,7 @@ int main()
                     std::cin>>position;
                     std::cout<<"    Salary : ";
                     std::cin>>salary;
-                    empSystem.add_employee(Employee(id,name,age,position,salary));
+                    empSystem.add_employee(Employee(id,name,position,salary,age));
                     //empSystem.save_to_file();
                 }
                 break;
