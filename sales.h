@@ -3,31 +3,30 @@
 
 #ifndef SALES
 #define SALES
-class Sales : public sahl::Employee
+class Sales : public Employee
 {
     private:
         float gross_sales = 0.0;
         float commission_rate = 0.0;
     public:
         Sales(){}
-        Sales(int id, std::string name, float salary, int age,float gross_sales, float commission_rate):Employee(id,name,salary,age),gross_sales(gross_sales),commission_rate(commission_rate)
+        Sales(int id, std::string name,  int age,float salary,float gross_sales, float commission_rate):Employee(id,name,age,salary),gross_sales(gross_sales),commission_rate(commission_rate)
         {}
 
         ~Sales(){}
 
-        /* void set_commission_rate(float commission_rate)
-        {
-            this->commission_rate = commission_rate;
-        }
-
-        void set_gross_sales(float gross_sale)
-        {
-            this->gross_sales = gross_sale;
-        } */
+        void display() const override{
+        Employee::display();
+        std::cout << "Gross Sales: " << gross_sales << ", Commission Rate: " << commission_rate << std::endl;
+    }
 
         float get_totalSalary() // pure virtual function implementation
         {
             return salary + (gross_sales * commission_rate);
         }
+        void save_to_file(std::ofstream& file) const { 
+        file << id << ' ' << name << ' ' << age << ' ' << salary << ' ' << gross_sales << ' '
+             << commission_rate << '\n';
+    }
 };
 #endif
