@@ -1,9 +1,10 @@
 #include<iostream>
+#include<vector>
 //#include"sqlite_orm.h"
 #include"employee.h"
 #include"engineer.h"
-/* #include"sales.h"
- */#include"reuse_funcs.h"
+#include"sales.h"
+#include"reuse_funcs.h"
 #include"crud.h"
 
 
@@ -27,74 +28,85 @@
 
 int main()
 {
+    std::string engineer_file = "engineer.txt";
+    std::string sale_file = "sale.txt";
     CrudOperation crud;
-    crud.load_employees_from_file("employee.txt");
-    crud.load_engineers_from_file("engineer.txt");
-    crud.load_sales_from_file("sale.txt");
-    int choice = forUser::main_list();
+    std::vector<Employee> employees;
+    std::vector<Engineer> engineers;
+    std::vector<Sales> sales;
+    //crud.load_employees_from_file("employee.txt");
+    crud.load_engineers_from_file(engineers,engineer_file);
+    crud.load_sales_from_file(sales,sale_file);
+    int choice;
     do {
+        choice = forUser::main_list();
         switch (choice) {
             case 1: {
-                int employee_type = forUser::employee_type_list();
-                if (employee_type == 1) 
-                {
-                    crud.add_engineers();
-                } 
-                else if (employee_type == 2) 
-                {
-                    crud.add_sales();
-                } 
-                else 
-                {
+                int type = forUser::employee_type_list();
+                if (type == 1){
+                    Engineer new_engineer = forUser::add_engineer();
+                    crud.add_new_engineer(engineers,new_engineer,engineer_file);
+                    break;
+                }else if(type == 2){
+                    Sales new_sale = forUser::add_sale();
+                    crud.add_new_sale(sales,new_sale,sale_file);
+                    break;
+                }else{
                     std::cout << "Invalid choice!" << std::endl;
+                    break;
                 }
                 break;
             }
             case 2:
             {
-                crud.display_all();
+                crud.display_all_engineers(engineers);
+                crud.display_all_sales(sales);
                 break;
             }
             case 3:
             {
-                crud.display_engineers();
+                crud.display_all_engineers(engineers);
                 break;
             }
             case 4:
             {
-                crud.display_sales();
+                crud.display_all_sales(sales);
                 break;
             }
             case 5: {
-                int idToUpdate;
-                std::cout << "Enter employee ID to update: ";
-                std::cin >> idToUpdate;
-
-                std::string newName;
-                float newSalary;
-                std::cout << "Enter new name: ";
-                std::cin >> newName;
-                std::cout << "Enter new salary: ";
-                std::cin >> newSalary;
-
+                int id = forUser::take_id();
+                std::string new_name = forUser::take_new_name();
+                crud.update_engineer_name_by_id(engineers,id,new_name,engineer_file);
                 //updateEmployeeByID<Sales>(storage, idToUpdate, newName, newSalary);
                 break;
             }
             case 6: {
-                int idToDelete;
-                std::cout << "Enter employee ID to delete: ";
-                std::cin >> idToDelete;
-
-                //deleteEmployeeByID<Sales>(storage, idToDelete);
+                int id = forUser::take_id();
+                std::string new_name = forUser::take_new_name();
+                crud.update_sale_name_by_id(sales,id,new_name,sale_file);
+                //updateEmployeeByID<Sales>(storage, idToUpdate, newName, newSalary);
                 break;
             }
             case 7:
-                std::cout << "Exiting..." << std::endl;
+            {
+                int id = forUser::take_id();
+                crud.delete_engineer_by_id(engineers,id,engineer_file);
                 break;
+            }
+            case 8:
+            {
+                int id = forUser::take_id();
+                crud.delete_sale_by_id(sales,id,sale_file);
+                break;
+            }
             default:
+            {
                 std::cout << "Invalid choice!" << std::endl;
+            }
+            break;
         }
-    } while (choice != 7);
+
+    } while (choice != 9);
 
 
 

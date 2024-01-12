@@ -7,9 +7,9 @@
 #ifndef FORUSER
 #define FORUSER
 namespace forUser{
-    int id{}, age{}, experience{};
+    int id{}, age{}, overtime_hours{}, experience{};
     std::string name{}, speciality{};
-    float overtime_hours{}, overtime_hour_rate{}, salary{},gross_sales{}, commission_rate{};
+    float  overtime_hour_rate{}, salary{},gross_sales{}, commission_rate{};
 int employee_type_list(){
     int employeeType;
     std::cout << "Enter type of employee (1 - Engineer, 2 - Sales): ";
@@ -22,10 +22,12 @@ int main_list(){
     std::cout << "1. Add new employee" << std::endl;
     std::cout << "2. Display all employees" << std::endl;
     std::cout << "3. Display all engineers" << std::endl;
-    std::cout << "4. Display all salespersons" << std::endl;
-    std::cout << "5. Update employee details" << std::endl;
-    std::cout << "6. Delete an employee" << std::endl;
-    std::cout << "7. Exit" << std::endl;
+    std::cout << "4. Display all sales" << std::endl;
+    std::cout << "5. Update name foe engineer" << std::endl;
+    std::cout << "6. Update name for sale" << std::endl;
+    std::cout << "7. Delete an engineer by id" << std::endl;
+    std::cout << "8. Delete an sale by id" << std::endl;
+    std::cout << "9. Exit" << std::endl;
     std::cout << "Enter your choice: ";
     std::cin >> choice;
     return choice;
@@ -71,6 +73,19 @@ Sales add_sale()
     Sales sale(id,name,age,salary,gross_sales,commission_rate);
     return sale;
 }    
+
+int take_id(){
+    int id;
+    std::cout << "Enter employee ID to update: ";
+    std::cin >> id;
+    return id;
+}
+std::string take_new_name(){
+    std::string new_name;
+    std::cout << "Enter new name: ";
+    std::cin >> new_name;
+    return new_name;
+}
 
 // Create or upgrade tables
 /* auto storage_access() {
