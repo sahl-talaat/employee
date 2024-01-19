@@ -1,16 +1,120 @@
 #include<iostream>
+#include<vector>
+//#include"sqlite_orm.h"
 #include"employee.h"
-#include"emp_manage_sys.h"
+#include"engineer.h"
+#include"sales.h"
+#include"reuse_funcs.h"
+#include"crud.h"
+
+
+    /* // Read data from the database
+    auto employees = storage.get_all<Engineer>(where(c(&Employee::id) == 1));
+    if (!employees.empty()) {
+        Engineer& retrievedEngineer = employees[0];
+        std::cout << "Retrieved Employee: " << retrievedEngineer.name << std::endl;
+
+        // Update employee by id
+        retrievedEngineer.overtime_hours = 15.0;
+        storage.update(retrievedEngineer);
+        std::cout << "Updated Overtime Hours: " << retrievedEngineer.overtime_hours << std::endl;
+
+        // Delete employee by id
+        storage.remove<Engineer>(1);
+        std::cout << "Employee deleted." << std::endl;
+    }  */
+
 
 
 int main()
 {
-    EmployeeManagementSystem empSystem;
-    Employee emp;
-    bool programe_runing = true;
-    while (programe_runing)
+    std::string engineer_file = "engineer.txt";
+    std::string sale_file = "sale.txt";
+    CrudOperation crud;
+    std::vector<Employee> employees;
+    std::vector<Engineer> engineers;
+    std::vector<Sales> sales;
+    //crud.load_employees_from_file("employee.txt");
+    crud.load_engineers_from_file(engineers,engineer_file);
+    crud.load_sales_from_file(sales,sale_file);
+    int choice;
+    do {
+        choice = forUser::main_list();
+        switch (choice) {
+            case 1: {
+                int type = forUser::employee_type_list();
+                if (type == 1){
+                    Engineer new_engineer = forUser::add_engineer();
+                    crud.add_new_engineer(engineers,new_engineer,engineer_file);
+                    break;
+                }else if(type == 2){
+                    Sales new_sale = forUser::add_sale();
+                    crud.add_new_sale(sales,new_sale,sale_file);
+                    break;
+                }else{
+                    std::cout << "Invalid choice!" << std::endl;
+                    break;
+                }
+                break;
+            }
+            case 2:
+            {
+                crud.display_all_engineers(engineers);
+                crud.display_all_sales(sales);
+                break;
+            }
+            case 3:
+            {
+                crud.display_all_engineers(engineers);
+                break;
+            }
+            case 4:
+            {
+                crud.display_all_sales(sales);
+                break;
+            }
+            case 5: {
+                int id = forUser::take_id();
+                std::string new_name = forUser::take_new_name();
+                crud.update_engineer_name_by_id(engineers,id,new_name,engineer_file);
+                //updateEmployeeByID<Sales>(storage, idToUpdate, newName, newSalary);
+                break;
+            }
+            case 6: {
+                int id = forUser::take_id();
+                std::string new_name = forUser::take_new_name();
+                crud.update_sale_name_by_id(sales,id,new_name,sale_file);
+                //updateEmployeeByID<Sales>(storage, idToUpdate, newName, newSalary);
+                break;
+            }
+            case 7:
+            {
+                int id = forUser::take_id();
+                crud.delete_engineer_by_id(engineers,id,engineer_file);
+                break;
+            }
+            case 8:
+            {
+                int id = forUser::take_id();
+                crud.delete_sale_by_id(sales,id,sale_file);
+                break;
+            }
+            default:
+            {
+                std::cout << "Invalid choice!" << std::endl;
+            }
+            break;
+        }
+
+    } while (choice != 9);
+
+
+
+    /* sahl::EmployeeManagementSystem empSystem;
+    sahl::Employee employee;
+    while (true)
     {
-        int choose = 0;
+        int choose{};
         std::cout<<"\tChoose operation\n";
         std::cout<<"    1 . add new\n";
         std::cout<<"    2 . display\n";
@@ -19,17 +123,13 @@ int main()
         std::cout<<"    5 . delete\n";
         std::cout<<"    0 . log out\n";
         std::cin>>choose;
-        if (choose == 0)
-        {
-            programe_runing = false;
-            break;
-        }
+     
         switch (choose)
         {
             case 1: // add new emp
             {
                 int emp_num,id,age;
-                float salary;
+                double salary;
                 std::string name,position;
                 std::cout<<" how many employees u'll add : ";
                 std::cin>>emp_num;
@@ -46,15 +146,14 @@ int main()
                     std::cin>>position;
                     std::cout<<"    Salary : ";
                     std::cin>>salary;
-                    empSystem.add_employee(Employee(id,name,age,position,salary));
+                    empSystem.add_employee(sahl::Employee(id,name,position,salary,age));
                     //empSystem.save_to_file();
                 }
                 break;
             }
             case 2: // dislay
             {
-                bool display_running = true;
-                while (display_running)
+                while (true)
                 {
                     int print_choose = 0;
                     std::cout<<"\t display operations\n";
@@ -63,11 +162,7 @@ int main()
                     std::cout<<"    2 . display by posiotion\n";
                     std::cout<<"    0 . back to main\n";
                     std::cin>>print_choose;
-                    if (print_choose == 0)
-                    {
-                        display_running = false;
-                        break;
-                    }
+
                     switch (print_choose)
                     {
                         case 1:
@@ -155,7 +250,7 @@ int main()
                         case 4:
                         {
                             int id;
-                            float salary;
+                            double salary;
                             std::cout<< " enter ID : ";
                             std::cin>>id;
                             std::cout<< " enter new Salary : ";
@@ -197,7 +292,7 @@ int main()
         
 
     }
-
+ */
     //Operation op;
     //op.add_new_emp();
 

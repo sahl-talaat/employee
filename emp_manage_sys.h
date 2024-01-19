@@ -5,6 +5,10 @@
 #include<algorithm>
 #include"employee.h"
 
+
+namespace sahl
+{
+    
 class EmployeeManagementSystem
 {
     private:
@@ -32,29 +36,35 @@ class EmployeeManagementSystem
         }
 
         // Load employee data from a file
-        void load_from_file() 
-        {
+        void load_from_file() {
             std::ifstream file(my_file);
             if (file.is_open()) {
-                employees.clear();
-                int id, age;
-                std::string name, position, line;
-                float salary;
+                employees.clear(); // Clear existing data
+
+                std::string line;
 
                 while (std::getline(file, line)) {
                     std::istringstream iss(line);
-                    if (iss >> id >> std::ws && std::getline(iss, name, ',') && iss >> age >> std::ws &&
-                        std::getline(iss, position, ',') && iss >> salary) {
-                        employees.emplace_back(id, name, age, position, salary);
+                    char dummy;
+                    int id, age;
+                    double salary;
+                    std::string name, position;
+                    if (iss >> id >> std::ws && std::getline(iss, name, ',') && std::getline(iss, position, ',') &&
+                        iss >> salary >> std::ws && iss >> age) {
+                        employees.emplace_back(id, name, position, salary, age);
                     }
-                    employees.emplace_back(id, name, age, position, salary);
                 }
+
                 file.close();
-                std::cout << "Data loaded successfully from " << my_file << std::endl;
-            } else {
-                std::cout << "Unable to open file for reading. Starting with an empty database." << std::endl;
-            }
+            
         }
+        }
+        void print_all_employees() {
+        for (const auto& emp : employees) {
+            std::cout << "ID: " << emp.get_id() << ", Name: " << emp.get_name() << ", Position: " << emp.get_position()
+                      << ", Salary: " << emp.get_salary() << ", Age: " << emp.get_age() << std::endl;
+        }
+    }
 
         // Save employee data to a file
         void save_to_file() 
@@ -62,7 +72,7 @@ class EmployeeManagementSystem
             std::ofstream file(my_file, std::ios::app);
             if (file.is_open()) {
                 for (const auto& emp : employees) {
-                    file << emp.get_id() << ',' << emp.get_name() << ',' << emp.get_age() << ',' << emp.get_position() << ',' << emp.get_salary() << '\n';
+                    file << emp.get_id() << ',' << emp.get_name() << ',' << emp.get_position() << ',' << emp.get_salary() << ',' << emp.get_age() << '\n';
                 }
                 file.close();
                 std::cout << "Data saved successfully to " << my_file << std::endl;
@@ -75,7 +85,7 @@ class EmployeeManagementSystem
         {
             std::ofstream file(my_file, std::ios_base::app);
             if (file.is_open()) {
-                file << emp.get_id() << ',' << emp.get_name() << ',' << emp.get_age() << ',' << emp.get_position() << ',' << emp.get_salary() << '\n';
+                file << emp.get_id() << ',' << emp.get_name() << ',' << emp.get_position() << ',' << emp.get_salary() << ',' << emp.get_age() << '\n';
                 file.close();
                 std::cout << "Employee data saved successfully to " << my_file << std::endl;
             } else {
@@ -104,7 +114,7 @@ class EmployeeManagementSystem
         void display_all()
         {
             for(const auto& emp : employees)
-                std::cout << "[ID : " << emp.get_id() << "], [Name : " << emp.get_name() <<"], [Age : " << emp.get_age() << ", [Position : " << emp.get_position() << "], [Salary : " << emp.get_salary()  << "]\n";
+                std::cout << "[ID : " << emp.get_id() << "], [Name : " << emp.get_name()  << ", [Position : " << emp.get_position() << "], [Salary : " << emp.get_salary() <<"], [Age : " << emp.get_age()  << "]\n";
         }
 
         // display employee works same position
@@ -115,7 +125,7 @@ class EmployeeManagementSystem
             {
                 if(emp.get_position() == position)
                 {
-                    std::cout << "[ID : " << emp.get_id() << "], [Name : " << emp.get_name() <<"], [position : "<<emp.get_position() << "]\n";
+                    std::cout << "[ID : " << emp.get_id() << "], [Name : " << emp.get_name() <<"], [Position : "<<emp.get_position() << "[Salary : " << emp.get_salary() << "[Age : " << emp.get_age() << "]\n";
                 }
             }
         }         
@@ -237,3 +247,5 @@ class EmployeeManagementSystem
 
            
 };
+
+} // namespace sahl
